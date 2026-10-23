@@ -38,15 +38,15 @@ Base: auditoria 00–13 e roadmap de 23/10/2026. Situação: implementação té
 | F-20 | Checkout/pagamento | Fora do MVP | Condições oficiais |
 | F-21 | Área do cliente | Fora do MVP | Necessidade |
 | F-22 | Favoritos persistentes | Fora do MVP | Pesquisa, consentimento |
-| AC-01 | `tests/unit/configurator.test.ts` + E2E revisão | Implementado, a executar | Regras aprovadas |
-| AC-02 | Teste Faca → Machado | Implementado, a executar | UX e negócio |
-| AC-03 | Teste Couro → Madeira | Implementado, a executar | UX e negócio |
-| AC-04 | Erro contextual e foco | Implementado, a executar | QA teclado |
-| AC-05 | Link oculto sem número, cópia | Implementado, a executar | Testar com contato oficial |
-| AC-06 | Teste dialog/Escape/foco retorno | Implementado, a executar | A11y manual |
+| AC-01 | `tests/unit/configurator.test.ts` + E2E revisão | Implementado e testado no CI (run 40039771076) | Regras aprovadas |
+| AC-02 | Teste Faca → Machado | Implementado e testado no CI (run 40039771076) | UX e negócio |
+| AC-03 | Teste Couro → Madeira | Implementado e testado no CI (run 40039771076) | UX e negócio |
+| AC-04 | Erro contextual e foco | Implementado e testado no CI (run 40039771076) | QA teclado |
+| AC-05 | Link oculto sem número, cópia | Implementado e testado no CI (run 40039771076) | Testar com contato oficial |
+| AC-06 | Teste dialog/Escape/foco retorno | Implementado e testado no CI (run 40039771076) | A11y manual |
 | AC-07 | Redirects em `_redirects` | Parcial | Host e 301 real |
 | AC-08 | Site sem analytics | Implementado | Política e provedor a revisar |
 
 ## Gates
 
-0: **bloqueado para publicação** por `docs/decisions/PENDENCIAS-NEGOCIO.md`. 1–5: implementação em curso, depende da CI e aceites. 6: revisão manual/axe/lab não concluídos. 7: preparação do host, sem publicação. 8: nenhuma medição iniciada. A linha F-13 não será habilitada sem fundamento.
+0: **bloqueado para publicação** por `docs/decisions/PENDENCIAS-NEGOCIO.md`. 1–5: código executado e validado por CI no commit 785d1e6 (11 unitários, 15 E2E aprovados, 1 E2E não aplicável); ainda dependem de aceites comerciais e conteúdo. 6: revisão manual/axe/lab não concluídos. 7: preparação do host, sem publicação. 8: nenhuma medição iniciada. A linha F-13 não será habilitada sem fundamento.
