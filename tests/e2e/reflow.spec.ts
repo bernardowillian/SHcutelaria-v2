@@ -9,6 +9,13 @@ test('reflow básico sem overflow horizontal nos viewports-alvo', async ({page})
         documentWidth: document.documentElement.scrollWidth,
         viewportWidth: document.documentElement.clientWidth
       }));
+      if (metrics.documentWidth > metrics.viewportWidth + 1) {
+        const offenders = await page.evaluate(() => Array.from(document.querySelectorAll<HTMLElement>('body *'))
+          .map(el => ({tag:el.tagName, className:el.className, right:Math.round(el.getBoundingClientRect().right)}))
+          .filter(el => typeof el.className === 'string' && el.right > document.documentElement.clientWidth + 1)
+          .slice(0,8));
+        console.log('Overflow em ' + route + ' / ' + width + ': ' + JSON.stringify(offenders));
+      }
       expect(metrics.documentWidth, route + ' em ' + width + 'px').toBeLessThanOrEqual(metrics.viewportWidth + 1);
       await expect(page.locator('main h1')).toBeVisible();
     }
