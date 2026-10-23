@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { serviceCards } from '../data/site';
+---
+<BaseLayout title="Cutelaria artesanal sob medida" description="Conheça a proposta da SH Cutelaria: personalização artesanal, referências de blocos e orientação para restauração.">
+  <section class="hero">
+    <div class="container hero-layout">
+      <div class="hero-copy">
+        <p class="hero-index">SH CUTELARIA · ATELIÊ EDITORIAL</p>
+        <h1>O valor está em cada <em>detalhe.</em></h1>
+        <p class="lede">Uma peça começa com uma boa conversa. Conheça possibilidades, organize suas preferências e peça uma avaliação sem complicação.</p>
+        <div class="actions"><a class="btn btn-primary" href="/personalizar/">Começar a personalizar <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="/como-funciona/">Entender o processo</a></div>
+      </div>
+      <div class="hero-art"><img src="/knife-study.svg" width="760" height="590" alt="" /><span class="art-caption">Ilustração conceitual · não é fotografia</span></div>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="caminhos-title"><div class="container">
+    <div class="section-heading"><p class="eyebrow">TRÊS CAMINHOS, UMA CONVERSA</p><h2 id="caminhos-title">Por onde você quer começar?</h2><p>Você pode explorar com calma. Nenhuma escolha feita aqui é uma compra.</p></div>
+    <div class="grid-3">{serviceCards.map(card => <article class="card"><span class="card-index">{card.index} / SERVIÇO</span><h3>{card.title}</h3><p>{card.text}</p><a class="text-link" href={card.href}>{card.action} <span aria-hidden="true">↗</span></a></article>)}</div>
+  </div></section>
+  <section class="section warm-section" aria-labelledby="etapas-title"><div class="container">
+    <div class="section-heading"><p class="eyebrow">SIMPLES E TRANSPARENTE</p><h2 id="etapas-title">Seu caminho até o orçamento</h2><p>Primeiro, suas ideias. Depois, a confirmação das possibilidades com o responsável.</p></div>
+    <div class="process-list"><div class="process-item"><strong>01 / EXPLORAR</strong><h3>Conte o que procura</h3><p>Escolha o tipo de peça e indique materiais ou preferências — sem precisar saber todos os nomes técnicos.</p></div><div class="process-item"><strong>02 / REVISAR</strong><h3>Confira o resumo</h3><p>Volte, ajuste opções e copie a descrição do que imagina antes de conversar.</p></div><div class="process-item"><strong>03 / CONVERSAR</strong><h3>Peça uma avaliação</h3><p>Disponibilidade, valor, prazo e condições são confirmados pela equipe no atendimento.</p></div></div>
+  </div></section>
+  <section class="section dark-section"><div class="container split"><div><p class="eyebrow" style="color:#efaa7c">ESCOLHAS COM SIGNIFICADO</p><h2>Uma boa peça começa com as perguntas certas.</h2><p class="muted">A interface foi pensada para ajudar a descrever o que você precisa, com etapas simples e a liberdade de mudar de ideia.</p><div class="actions"><a class="btn btn-light" href="/personalizar/">Organizar minhas escolhas</a></div></div><div class="inset-panel" style="background:#332922"><p class="eyebrow" style="color:#efaa7c">NOSSO COMPROMISSO NO SITE</p><h3>Sem surpresas na tela.</h3><p style="color:#e5d7c9">Não exibimos preços ou estoque sem verificação. O resumo ajuda no primeiro contato, mas não substitui um orçamento confirmado.</p></div></div></section>
+  <section class="section"><div class="container narrow"><p class="eyebrow">DÚVIDAS FREQUENTES</p><h2>Antes de começar</h2><div class="faq"><details><summary>Preciso saber exatamente o que quero?</summary><p>Não. O personalizador permite marcar “Quero orientação” em algumas etapas. Suas escolhas servem para iniciar a conversa.</p></details><details><summary>Concluir o formulário faz um pedido?</summary><p>Não. Ele apenas prepara um resumo para copiar ou levar ao atendimento. A equipe precisa confirmar o que é possível produzir.</p></details><details><summary>O site mostra os materiais disponíveis hoje?</summary><p>Não. As referências visuais não representam estoque. A disponibilidade deve ser confirmada diretamente com o ateliê.</p></details></div></div></section>
+</BaseLayout>
