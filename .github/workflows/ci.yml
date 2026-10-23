@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Instalação inicial cria lockfile apenas no runner. Fixar lockfile após
+      # sua primeira geração verificada; não declarar npm ci enquanto ausente.
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
