@@ -1,0 +1,210 @@
+---
+import { choices } from '../domain/configurator';
+import '../styles/configurator.css';
+const contact = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '';
+---
+<section id="quote-builder" class="quote-shell container" data-contact={contact}>
+  <div class="quote-main">
+    <div class="quote-head">
+      <p class="eyebrow">SEU RASCUNHO DE ORÇAMENTO</p>
+      <p class="step-count" id="step-count" aria-live="polite">Etapa 1 de 6</p>
+      <div class="progress-track" role="presentation"><div id="progress-fill" class="progress-fill"></div></div>
+      <h2 id="active-title">Que tipo de ferramenta você imagina?</h2>
+      <p class="muted" id="step-instruction">Escolha a opção que mais se aproxima da sua ideia. Você poderá voltar e alterar depois.</p>
+    </div>
+    <form id="quote-form" novalidate>
+      <fieldset class="step-panel" data-step="tool" aria-describedby="error-tool">
+        <legend class="sr-only">Tipo de ferramenta</legend>
+        <div class="choice-grid">{choices.tool.map(option => <label class="choice"><input type="radio" name="tool" value={option.id}/><span class="choice-body"><span class="choice-check" aria-hidden="true">✓</span><strong>{option.label}</strong><small>{option.help}</small></span></label>)}</div>
+        <p id="error-tool" class="field-error" role="alert" tabindex="-1" hidden></p>
+      </fieldset>
+      <fieldset class="step-panel" data-step="style" aria-describedby="error-style" hidden>
+        <legend class="sr-only">Estilo de faca</legend>
+        <div class="choice-grid">{choices.style.map(option => <label class="choice"><input type="radio" name="style" value={option.id}/><span class="choice-body"><span class="choice-check" aria-hidden="true">✓</span><strong>{option.label}</strong><small>{option.help}</small></span></label>)}</div>
+        <p id="error-style" class="field-error" role="alert" tabindex="-1" hidden></p>
+      </fieldset>
+      <fieldset class="step-panel" data-step="blade" aria-describedby="error-blade" hidden>
+        <legend class="sr-only">Material da lâmina</legend>
+        <div class="choice-grid">{choices.blade.map(option => <label class="choice"><input type="radio" name="blade" value={option.id}/><span class="choice-body"><span class="choice-check" aria-hidden="true">✓</span><strong>{option.label}</strong><small>{option.help}</small></span></label>)}</div>
+        <p id="error-blade" class="field-error" role="alert" tabindex="-1" hidden></p>
+      </fieldset>
+      <fieldset class="step-panel" data-step="handle" aria-describedby="error-handle" hidden>
+        <legend class="sr-only">Material do cabo</legend>
+        <div class="choice-grid">{choices.handle.map(option => <label class="choice"><input type="radio" name="handle" value={option.id}/><span class="choice-body"><span class="choice-check" aria-hidden="true">✓</span><strong>{option.label}</strong><small>{option.help}</small></span></label>)}</div>
+        <p id="error-handle" class="field-error" role="alert" tabindex="-1" hidden></p>
+      </fieldset>
+      <fieldset class="step-panel" data-step="sheath" aria-describedby="error-sheath" hidden>
+        <legend class="sr-only">Bainha e observações</legend>
+        <div class="choice-grid">{choices.sheath.map(option => <label class="choice"><input type="radio" name="sheath" value={option.id}/><span class="choice-body"><span class="choice-check" aria-hidden="true">✓</span><strong>{option.label}</strong><small>{option.help}</small></span></label>)}</div>
+        <fieldset class="leather-field" id="leather-options" hidden><legend>Tem preferência por couro?</legend><p class="muted tiny">Esta é apenas uma referência para consulta, não uma confirmação de comercialização.</p><div class="choice-grid">{choices.leather.map(option => <label class="choice"><input type="radio" name="leather" value={option.id}/><span class="choice-body"><span class="choice-check" aria-hidden="true">✓</span><strong>{option.label}</strong><small>{option.help}</small></span></label>)}</div></fieldset>
+        <label class="comment-label" for="quote-note">Algum detalhe importante? <span class="muted">(opcional)</span></label>
+        <p class="muted tiny" id="note-help">Não informe endereço, documentos ou dados sensíveis neste campo.</p>
+        <textarea id="quote-note" name="note" rows="4" maxlength="400" aria-describedby="note-help note-count" placeholder="Ex.: gostaria de orientação sobre o acabamento."></textarea>
+        <p id="note-count" class="char-count">0 de 400 caracteres</p>
+        <p id="error-sheath" class="field-error" role="alert" tabindex="-1" hidden></p>
+      </fieldset>
+      <section class="step-panel review-panel" data-step="review" aria-labelledby="review-title" hidden>
+        <h3 id="review-title">Seu resumo está pronto para revisar</h3>
+        <p>Estas são preferências iniciais. A equipe precisará confirmar viabilidade, disponibilidade, prazo, valor e condições.</p>
+        <dl class="summary-list" id="summary-list"></dl>
+        <div class="edit-actions">
+          <button type="button" class="text-edit" data-edit="tool">Editar ferramenta</button>
+          <button type="button" class="text-edit" data-edit="style">Editar estilo</button>
+          <button type="button" class="text-edit" data-edit="blade">Editar lâmina</button>
+          <button type="button" class="text-edit" data-edit="handle">Editar cabo</button>
+          <button type="button" class="text-edit" data-edit="sheath">Editar bainha e detalhes</button>
+        </div>
+        <label class="comment-label" for="quote-message">Mensagem preparada para copiar</label>
+        <textarea id="quote-message" rows="10" readonly aria-describedby="message-help"></textarea>
+        <p id="message-help" class="tiny muted">O resumo pode ser copiado ou selecionado manualmente. Nenhuma mensagem é enviada por esta página.</p>
+        <div class="actions review-actions">
+          <button type="button" id="copy-summary" class="btn btn-primary">Copiar resumo</button>
+          <a id="whatsapp-link" class="btn btn-dark" href="/como-funciona/" target="_blank" rel="noopener noreferrer" hidden>Abrir WhatsApp ↗</a>
+        </div>
+        <p id="copy-feedback" role="status" aria-live="polite"></p>
+        <p id="contact-pending" class="notice"><strong>Contato comercial em confirmação.</strong> Enquanto o número oficial não for verificado, copie o resumo e guarde-o para conversar com a equipe por um canal que você já conheça. Não usamos número fictício.</p>
+      </section>
+    </form>
+    <div class="wizard-controls" id="wizard-controls">
+      <button type="button" class="btn btn-secondary" id="previous-step" hidden>← Voltar</button>
+      <button type="button" class="btn btn-primary" id="next-step">Continuar <span aria-hidden="true">→</span></button>
+    </div>
+    <noscript><p class="notice">Para usar o personalizador por etapas, ative JavaScript. Você ainda pode consultar as <a href="/como-funciona/">orientações de orçamento</a>.</p></noscript>
+  </div>
+  <aside class="quote-aside" aria-label="Informações sobre o orçamento">
+    <div class="side-card"><span class="eyebrow">SEM COMPROMISSO</span><h3>Você está só organizando suas ideias.</h3><p>Não é uma compra e não há pagamento nesta página. Todas as opções dependem de confirmação pelo responsável.</p><hr/><p class="tiny"><strong>Você tem o controle.</strong> Volte para ajustar as escolhas ou copie sua mensagem ao final.</p></div>
+    <div class="quote-side-tip"><span aria-hidden="true">✳</span> Ainda tem dúvidas? Escolha “Quero orientação” quando aparecer.</div>
+  </aside>
+</section>
+<script>
+  import {
+    flowSteps, normalizeDraft, validateStep, buildWhatsAppMessage, buildWhatsAppUrl, summaryLines
+  } from '../domain/configurator';
+  import type { QuoteDraft, Step, Tool, Style, Blade, Handle, Sheath, Leather } from '../domain/configurator';
+
+  const root = document.querySelector<HTMLElement>('#quote-builder');
+  if (root) {
+    let draft: QuoteDraft = { note: '' };
+    let active: Step = 'tool';
+    const titles: Record<Step, [string,string]> = {
+      tool: ['Que tipo de ferramenta você imagina?', 'Escolha a opção que mais se aproxima da sua ideia. Você poderá voltar e alterar depois.'],
+      style: ['Qual estilo de faca prefere?', 'São referências para orientar a conversa. A viabilidade será confirmada.'],
+      blade: ['E quanto à lâmina?', 'Não precisa entender de ligas: escolha uma referência ou peça orientação.'],
+      handle: ['Como você imagina o cabo?', 'As categorias são sugestões; materiais e procedência precisam ser confirmados.'],
+      sheath: ['Vamos falar de bainha e detalhes?', 'Escolha uma preferência e, se quiser, descreva mais alguma coisa.'],
+      review: ['Tudo certo com suas escolhas?', 'Leia o resumo, ajuste qualquer etapa e copie a mensagem quando desejar.']
+    };
+    const form = root.querySelector<HTMLFormElement>('#quote-form')!;
+    const prev = root.querySelector<HTMLButtonElement>('#previous-step')!;
+    const next = root.querySelector<HTMLButtonElement>('#next-step')!;
+    const message = root.querySelector<HTMLTextAreaElement>('#quote-message')!;
+    const summary = root.querySelector<HTMLElement>('#summary-list')!;
+    const copy = root.querySelector<HTMLButtonElement>('#copy-summary')!;
+    const wa = root.querySelector<HTMLAnchorElement>('#whatsapp-link')!;
+    const notice = root.querySelector<HTMLElement>('#contact-pending')!;
+    const feedback = root.querySelector<HTMLElement>('#copy-feedback')!;
+    const leather = root.querySelector<HTMLElement>('#leather-options')!;
+    const counter = root.querySelector<HTMLElement>('#note-count')!;
+
+    function clearErrors(): void {
+      root!.querySelectorAll<HTMLElement>('.field-error').forEach(error => { error.hidden = true; error.textContent = ''; });
+    }
+    function render(): void {
+      const sequence = flowSteps(draft);
+      const index = sequence.indexOf(active);
+      root!.querySelectorAll<HTMLElement>('[data-step]').forEach(el => { el.hidden = el.dataset.step !== active; });
+      root!.querySelector<HTMLElement>('#step-count')!.textContent = 'Etapa ' + (index + 1) + ' de ' + sequence.length;
+      root!.querySelector<HTMLElement>('#active-title')!.textContent = titles[active][0];
+      root!.querySelector<HTMLElement>('#step-instruction')!.textContent = titles[active][1];
+      root!.querySelector<HTMLElement>('#progress-fill')!.style.width = ((index + 1) / sequence.length * 100) + '%';
+      leather.hidden = draft.sheath !== 'couro';
+      prev.hidden = index === 0;
+      next.hidden = active === 'review';
+      root!.querySelectorAll<HTMLButtonElement>('[data-edit]').forEach(button => {
+        button.hidden = button.dataset.edit === 'style' && draft.tool !== 'faca';
+      });
+      if (active === 'review') {
+        summary.replaceChildren();
+        const rows = summaryLines(draft);
+        for (const row of rows) {
+          const separator = row.indexOf(': ');
+          const dt = document.createElement('dt');
+          const dd = document.createElement('dd');
+          dt.textContent = row.slice(0, separator);
+          dd.textContent = row.slice(separator + 2);
+          summary.append(dt, dd);
+        }
+        const content = buildWhatsAppMessage(draft);
+        message.value = content;
+        const url = buildWhatsAppUrl(content, root!.dataset.contact);
+        wa.hidden = !url;
+        notice.hidden = !!url;
+        if (url) wa.href = url;
+      }
+      const note = root!.querySelector<HTMLTextAreaElement>('#quote-note')!;
+      counter.textContent = note.value.length + ' de 400 caracteres';
+    }
+    form.addEventListener('change', event => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement) || target.type !== 'radio') return;
+      switch (target.name) {
+        case 'tool': draft.tool = target.value as Tool; break;
+        case 'style': draft.style = target.value as Style; break;
+        case 'blade': draft.blade = target.value as Blade; break;
+        case 'handle': draft.handle = target.value as Handle; break;
+        case 'sheath': draft.sheath = target.value as Sheath; break;
+        case 'leather': draft.leather = target.value as Leather; break;
+      }
+      draft = normalizeDraft(draft);
+      // Valores antigos devem sair também do DOM para não ressurgirem.
+      if (draft.tool !== 'faca') root!.querySelectorAll<HTMLInputElement>('input[name="style"]').forEach(input => { input.checked = false; });
+      if (draft.sheath !== 'couro') root!.querySelectorAll<HTMLInputElement>('input[name="leather"]').forEach(input => { input.checked = false; });
+      clearErrors();
+      render();
+    });
+    root.querySelector<HTMLTextAreaElement>('#quote-note')!.addEventListener('input', event => {
+      draft.note = (event.target as HTMLTextAreaElement).value;
+      render();
+    });
+    next.addEventListener('click', () => {
+      clearErrors();
+      const issues = validateStep(draft, active);
+      if (issues.length) {
+        const error = root!.querySelector<HTMLElement>('#error-' + issues[0]!.field);
+        if (error) { error.textContent = issues[0]!.message; error.hidden = false; error.focus(); }
+        return;
+      }
+      const steps = flowSteps(draft);
+      active = steps[steps.indexOf(active) + 1] ?? 'review';
+      render();
+      root!.querySelector<HTMLElement>('#active-title')!.focus({preventScroll:true});
+      root!.querySelector<HTMLElement>('.quote-head')!.scrollIntoView({block:'start',behavior:'instant'});
+    });
+    prev.addEventListener('click', () => {
+      clearErrors();
+      const steps = flowSteps(draft);
+      active = steps[Math.max(0, steps.indexOf(active) - 1)] ?? 'tool';
+      render();
+      root!.querySelector<HTMLElement>('#active-title')!.focus({preventScroll:true});
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-edit]').forEach(button => button.addEventListener('click', () => {
+      clearErrors();
+      active = button.dataset.edit as Step;
+      render();
+      root!.querySelector<HTMLElement>('#active-title')!.focus({preventScroll:true});
+      root!.querySelector<HTMLElement>('.quote-head')!.scrollIntoView({block:'start',behavior:'instant'});
+    }));
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(message.value);
+        feedback.textContent = 'Resumo copiado. Você pode colá-lo em sua conversa.';
+      } catch {
+        message.focus(); message.select();
+        feedback.textContent = 'Não foi possível copiar automaticamente. O texto está selecionado; use a função Copiar do aparelho.';
+      }
+    });
+    const heading = root.querySelector<HTMLElement>('#active-title')!;
+    heading.setAttribute('tabindex','-1');
+    render();
+  }
+</script>
