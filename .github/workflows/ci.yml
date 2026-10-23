@@ -17,6 +17,12 @@ jobs:
       # Instalação inicial cria lockfile apenas no runner. Fixar lockfile após
       # sua primeira geração verificada; não declarar npm ci enquanto ausente.
       - run: npm install --no-audit --no-fund
+      # Em bootstrap temporário, o lockfile é disponibilizado para commit verificado.
+      - run: |
+          echo LOCKFILE_BEGIN
+          base64 -w0 package-lock.json
+          echo
+          echo LOCKFILE_END
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test

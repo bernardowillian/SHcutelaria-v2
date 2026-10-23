@@ -24,13 +24,14 @@ describe('configurador / regras puras', () => {
     expect(buildWhatsAppMessage(normalized)).not.toContain('Preferência de couro:');
   });
   it('AC-04 exige escolhas por grupo sem perder dados', () => {
-    const draft: QuoteDraft = {...full,blade:undefined};
+    const draft: QuoteDraft = {...full}; delete draft.blade;
     expect(validateStep(draft,'blade')[0]?.message).toContain('lâmina');
     expect(validateStep(draft,'review')).toHaveLength(1);
     expect(draft.handle).toBe('madeira');
   });
   it('estilo de faca é requerido como escolha explícita, orientação é válida', () => {
-    expect(validateStep({...full,style:undefined},'style')).toHaveLength(1);
+    const withoutStyle: QuoteDraft = {...full}; delete withoutStyle.style;
+    expect(validateStep(withoutStyle,'style')).toHaveLength(1);
     expect(validateStep({...full,style:'orientacao'},'style')).toEqual([]);
   });
   it.each(['faca','cutelo','machado'] as const)('AC-01/08 mensagem %s consistente', tool => {
