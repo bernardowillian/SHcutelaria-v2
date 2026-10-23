@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { references } from '../data/catalog';
+---
+<BaseLayout title="Blocos e referências de materiais" description="Explore referências ilustrativas de tonalidades e padrões para blocos de cabo. Disponibilidade e procedência sob consulta.">
+  <header class="page-hero"><div class="container"><p class="eyebrow">MATERIAIS · INSPIRAÇÃO</p><h1>Beleza que vem da matéria.</h1><p class="lede">Observe diferentes direções de cor e textura antes de conversar sobre blocos para uma peça.</p></div></header>
+  <section class="section"><div class="container"><div class="notice"><strong>Referências, não estoque.</strong> Os desenhos abaixo são ilustrações criadas para o site; não são fotografias de blocos nem demonstram materiais disponíveis. Espécies, origem e disponibilidade precisam ser confirmadas.</div>
+    <div class="grid-3">{references.map(item => <article class="card">
+      <div class:list={['material-abstract',item.illustration === 'light' ? '' : item.illustration]} role="img" aria-label={'Ilustração abstrata de ' + item.title.toLowerCase()}></div>
+      <span class="card-index">REFERÊNCIA / {item.id.toUpperCase()}</span><h2 style="font-size:1.7rem">{item.title}</h2><p>{item.description}</p><button type="button" class="btn btn-secondary open-material" data-id={item.id} data-title={item.title}>Ver detalhe ilustrativo</button>
+    </article>)}</div>
+    <div class="notice"><strong>Tem um material específico em mente?</strong> Use as referências como ponto de partida. A consulta comercial depende da confirmação de um canal oficial.</div>
+  </div></section>
+  <dialog id="material-dialog" class="material-dialog" aria-labelledby="dialog-title"><div class="dialog-top"><h2 id="dialog-title">Referência ilustrativa</h2><button type="button" class="btn btn-secondary close-dialog">Fechar</button></div><div id="dialog-graphic" class="material-abstract" role="img" aria-label="Textura gráfica de material"></div><p>Esta imagem é apenas um estudo de cores. Ela não comprova material, estoque ou acabamento real.</p></dialog>
+</BaseLayout>
+<style>
+.material-dialog{width:min(92vw,660px);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(1rem,4vw,2rem);background:var(--canvas);color:var(--ink);max-height:85vh;overflow:auto}.material-dialog::backdrop{background:#161616d9}.dialog-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.4rem}.dialog-top h2{font-size:clamp(1.4rem,3vw,2rem);margin:0}.material-dialog .material-abstract{margin-bottom:1rem}
+</style>
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#material-dialog');
+  const title = document.querySelector<HTMLElement>('#dialog-title');
+  const graphic = document.querySelector<HTMLElement>('#dialog-graphic');
+  const close = document.querySelector<HTMLButtonElement>('.close-dialog');
+  let origin: HTMLElement | null = null;
+  document.querySelectorAll<HTMLButtonElement>('.open-material').forEach(button => button.addEventListener('click', () => {
+    if (!dialog || !title || !graphic) return;
+    origin = button;
+    title.textContent = 'Referência: ' + (button.dataset.title || '');
+    graphic.className = 'material-abstract ' + (button.dataset.id === 'escuras' ? 'dark' : button.dataset.id === 'figuradas' ? 'pattern' : '');
+    graphic.setAttribute('aria-label','Textura ilustrativa de ' + (button.dataset.title || 'material'));
+    dialog.showModal();
+    close?.focus();
+  }));
+  close?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('close', () => origin?.focus());
+</script>
